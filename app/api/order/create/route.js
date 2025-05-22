@@ -1,8 +1,6 @@
 import { getAuth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server";
-import connectDB from "@/config/db";
 import Product from "@/models/Product";
-import Order from "@/models/Order"
 import { inngest } from "@/config/inngest";
 import User from "@/models/User";
 
@@ -19,9 +17,9 @@ export async function POST(request) {
         if(!address || !items.length){
                     return NextResponse.json({ success: false, message:"Invalid data" })
         }
-        
+         
         const amount=await items.reduce(async(acc,item)=>{
-            const product=await Product.findById(items.product)
+            const product=await Product.findById(item.product)
             return acc+product.offerPrice*item.quantity
         },0)
 
@@ -40,7 +38,7 @@ export async function POST(request) {
         user.cartItems={}
         await user.save()
 
-        return NextResponse.json({ success: true, meassage: 'Order Placed' })
+        return NextResponse.json({ success: true, message: 'Order Placed' })
 
     } catch (error) {
         console.log(error)
