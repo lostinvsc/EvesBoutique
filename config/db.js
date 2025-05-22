@@ -17,7 +17,10 @@ async function connectDB(){
             bufferCommands:false
         }
 
-        cached.promise=mongoose.connect(`${process.env.MONGODB_URI}/evesboutique`,opts).then(mongoose=>{
+        cached.promise=mongoose.connect(process.env.MONGODB_URI,opts).then(mongoose=>{
+            console.log('Connected to DB:', mongoose.connection.name);
+
+
             return mongoose
         })
 
