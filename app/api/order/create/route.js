@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Product from "@/models/Product";
 import { inngest } from "@/config/inngest";
 import User from "@/models/User";
+import connectDB from "@/config/db";
 
 export async function POST(request) {
     try {
@@ -14,7 +15,7 @@ export async function POST(request) {
 
         const {address,items} = await request.json()
 
-        if(!address || !items.length){
+        if(!address || items.length===0){
                     return NextResponse.json({ success: false, message:"Invalid data" })
         }
          
@@ -34,7 +35,10 @@ export async function POST(request) {
             }
         })
 
+         await connectDB();
+
         const user =await User.findById(userId)
+
         user.cartItems={}
         await user.save()
 
@@ -45,3 +49,5 @@ export async function POST(request) {
         return NextResponse.json({ success: false, message: error.message })
     }
 }
+
+export {}; 

@@ -13,3 +13,4 @@ export async function GET(request) {
  return NextResponse.json({ success: false, message: error.message })
     }
 }
+export {};

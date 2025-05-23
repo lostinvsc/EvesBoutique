@@ -15,10 +15,10 @@ const nextConfig = {
         ],
     },
 
-     eslint: {
-        // ✅ Prevents ESLint errors from breaking production builds
-        ignoreDuringBuilds: true,
-    },
+    //  eslint: {
+    //     // ✅ Prevents ESLint errors from breaking production builds
+    //     ignoreDuringBuilds: true,
+    // },
     
 };
 

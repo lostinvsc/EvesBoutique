@@ -75,3 +75,5 @@ return NextResponse.json({success:false,message:"No files uploaded"})
     return NextResponse.json({success:false,message:error.message})
 }
 }
+
+export {};
