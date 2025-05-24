@@ -13,10 +13,6 @@ const HomeProducts = () => {
 
       {/* Container with central vertical line for <400px */}
       <div className="relative w-full max-[400px]:w-screen">
-
-        {/* Central vertical line */}
-        {/* <div className="hidden max-[400px]:block absolute top-0 bottom-0 left-1/2 w-[2px] bg-white z-50" /> */}
-
         <div className="flex flex-wrap justify-around gap-y-6 relative z-10">
           {products.map((product, index) => (
             <div

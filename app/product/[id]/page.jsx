@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react";
-import { assets } from "@/assets/assets";
 import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +8,7 @@ import { useParams } from "next/navigation";
 import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
+import Link from "next/link";
 
 const Product = () => {
 
@@ -123,16 +123,34 @@ const Product = () => {
                 </div>
             </div>
             <div className="flex flex-col items-center">
+
+
                 <div className="flex flex-col items-center mb-4 mt-16">
                     <p className="text-3xl font-medium">Featured <span className="font-medium text-orange-600">Products</span></p>
                     <div className="w-28 h-0.5 bg-orange-600 mt-2"></div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full">
-                    {products.slice(0, 5).map((product, index) => <ProductCard key={index} product={product} />)}
+
+
+                <div className="relative w-full max-[400px]:w-screen my-8">
+                    <div className="flex flex-wrap justify-around gap-y-6 relative z-10">
+                        {products.map((product, index) => (
+                            <div
+                                key={index}
+                                className={`w-[200px] 
+                          max-[400px]:w-1/2 
+                          max-[300px]:w-full`}
+                            >
+                                <ProductCard product={product} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                <button className="px-8 py-2 mb-16 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
+
+
+
+                <Link href="/all-products" className="px-8 py-2 mb-16 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
                     See more
-                </button>
+                </Link>
             </div>
         </div>
         <Footer />
@@ -141,3 +159,4 @@ const Product = () => {
 };
 
 export default Product;
+
