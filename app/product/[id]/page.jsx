@@ -67,7 +67,7 @@ const Product = () => {
                     <h1 className="text-3xl font-medium text-gray-800/90 mb-4">
                         {productData.name}
                     </h1>
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                         <div className="flex items-center gap-0.5">
                             <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
                             <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
@@ -80,7 +80,7 @@ const Product = () => {
                             />
                         </div>
                         <p>(4.5)</p>
-                    </div>
+                    </div> */}
                     <p className="text-gray-600 mt-3">
                         {productData.description}
                     </p>
@@ -94,14 +94,14 @@ const Product = () => {
                     <div className="overflow-x-auto">
                         <table className="table-auto border-collapse w-full max-w-72">
                             <tbody>
-                                <tr>
+                                {/* <tr>
                                     <td className="text-gray-600 font-medium">Brand</td>
                                     <td className="text-gray-800/50 ">Generic</td>
-                                </tr>
-                                <tr>
+                                </tr> */}
+                                {/* <tr>
                                     <td className="text-gray-600 font-medium">Color</td>
                                     <td className="text-gray-800/50 ">Multi</td>
-                                </tr>
+                                </tr> */}
                                 <tr>
                                     <td className="text-gray-600 font-medium">Category</td>
                                     <td className="text-gray-800/50">

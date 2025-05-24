@@ -11,8 +11,11 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      gridTemplateColumns:{
-        'auto': 'repeat(auto-fit, minmax(200px, 1fr))'
+      gridTemplateColumns: {
+        auto: "repeat(auto-fit, minmax(200px, 1fr))",
+      },
+      screens: {
+        smallss: "350px", // custom breakpoint for 350px
       },
     },
   },

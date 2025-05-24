@@ -3,16 +3,40 @@ import ProductCard from "./ProductCard";
 import { useAppContext } from "@/context/AppContext";
 
 const HomeProducts = () => {
-
-  const { products, router } = useAppContext()
+  const { products, router } = useAppContext();
 
   return (
     <div className="flex flex-col items-center pt-14">
-      <p className="text-2xl font-medium text-left w-full">Popular products</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-6 pb-14 w-full">
-        {products.map((product, index) => <ProductCard key={index} product={product} />)}
+      <p className="text-2xl font-medium text-left w-full mb-10">
+        Popular products
+      </p>
+
+      {/* Container with central vertical line for <400px */}
+      <div className="relative w-full max-[400px]:w-screen">
+
+        {/* Central vertical line */}
+        {/* <div className="hidden max-[400px]:block absolute top-0 bottom-0 left-1/2 w-[2px] bg-white z-50" /> */}
+
+        <div className="flex flex-wrap justify-around gap-y-6 relative z-10">
+          {products.map((product, index) => (
+            <div
+              key={index}
+              className={`w-[200px] 
+                          max-[400px]:w-1/2 
+                          max-[300px]:w-full`}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
       </div>
-      <button onClick={() => { router.push('/all-products') }} className="px-12 py-2.5 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
+
+      <button
+        onClick={() => {
+          router.push("/all-products");
+        }}
+        className="px-10 py-2.5 border rounded text-gray-500/70 hover:bg-slate-50/90 transition mt-10"
+      >
         See more
       </button>
     </div>

@@ -1,62 +1,68 @@
-import React from 'react'
-import { assets } from '@/assets/assets'
-import Image from 'next/image';
+import React from 'react';
 import { useAppContext } from '@/context/AppContext';
+import Image from 'next/image';
 
 const ProductCard = ({ product }) => {
+  const { currency, router } = useAppContext();
 
-    const { currency, router } = useAppContext()
+  return (
+    <div
+      onClick={() => {
+        router.push('/product/' + product._id);
+        scrollTo(0, 0);
+      }}
+      className="cursor-pointer max-w-[220px] w-full bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col gap-3 p-4"
+    >
+      <div className="relative w-full h-56 rounded-lg overflow-hidden group">
+        <Image
+          src={product.image[0]}
+          alt={product.name}
+          className="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105"
+          width={800}
+          height={800}
+          priority
+        />
 
-    return (
-        <div
-            onClick={() => { router.push('/product/' + product._id); scrollTo(0, 0) }}
-            className="flex flex-col items-start gap-0.5 max-w-[200px] w-full cursor-pointer"
+        {/* Optional Discount Badge */}
+        {product.discount && (
+          <div className="absolute top-3 left-3 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-lg z-10">
+            {product.discount}% OFF
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col flex-grow">
+        <h3 className="text-lg font-semibold text-gray-900 truncate" title={product.name}>
+          {product.name}
+        </h3>
+        <p
+          className="text-sm text-gray-600 mt-1 line-clamp-2"
+          title={product.description}
         >
-            <div className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center">
-                <Image
-                    src={product.image[0]}
-                    alt={product.name}
-                    className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
-                    width={800}
-                    height={800}
-                />
-                <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
-                    <Image
-                        className="h-3 w-3"
-                        src={assets.heart_icon}
-                        alt="heart_icon"
-                    />
-                </button>
-            </div>
+          {product.description}
+        </p>
+      </div>
 
-            <p className="md:text-base font-medium pt-2 w-full truncate">{product.name}</p>
-            <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate">{product.description}</p>
-            <div className="flex items-center gap-2">
-                <p className="text-xs">{4.5}</p>
-                <div className="flex items-center gap-0.5">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        <Image
-                            key={index}
-                            className="h-3 w-3"
-                            src={
-                                index < Math.floor(4)
-                                    ? assets.star_icon
-                                    : assets.star_dull_icon
-                            }
-                            alt="star_icon"
-                        />
-                    ))}
-                </div>
-            </div>
+      <div className="flex items-center justify-between mt-4">
+        <p className="text-xl font-bold text-orange-600">
+          {currency}
+          {product.offerPrice.toFixed(0)}
+        </p>
 
-            <div className="flex items-end justify-between w-full mt-1">
-                <p className="text-base font-medium">{currency}{product.offerPrice}</p>
-                <button className=" max-sm:hidden px-4 py-1.5 text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-slate-50 transition">
-                    Buy now
-                </button>
-            </div>
-        </div>
-    )
-}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push('/product/' + product._id);
+            scrollTo(0, 0);
+          }}
+          className="bg-orange-600 text-white px-5 py-2 rounded-full text-sm font-semibold shadow-md hover:bg-orange-700 transition-colors duration-300"
+        >
+          Buy now
+        </button>
 
-export default ProductCard
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;

@@ -12,12 +12,18 @@ const AddProduct = () => {
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Earphone');
+  const [category, setCategory] = useState('Garments');
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isSubmitting) return;
+    setIsSubmitting(true); // Disable the button
+
 
     const formData = new FormData()
     formData.append('name', name)
@@ -40,7 +46,7 @@ const AddProduct = () => {
       if (data.success) {
         toast.success(data.message)
         setFiles([])
-        setCategory('Earphone')
+        setCategory('Garments')
         setName('')
         setDescription('')
         setPrice('')
@@ -50,7 +56,9 @@ const AddProduct = () => {
       }
 
     } catch (error) {
-toast.error(error.message)
+      toast.error(error.message)
+    } finally {
+      setIsSubmitting(false);
     }
 
   };
@@ -124,12 +132,10 @@ toast.error(error.message)
               onChange={(e) => setCategory(e.target.value)}
               defaultValue={category}
             >
-              <option value="Earphone">Earphone</option>
-              <option value="Headphone">Headphone</option>
-              <option value="Watch">Watch</option>
-              <option value="Smartphone">Smartphone</option>
-              <option value="Laptop">Laptop</option>
-              <option value="Camera">Camera</option>
+              <option value="Garments">Garments</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Bags">Bags</option>
+              <option value="Merchandise">Merchandise</option>
               <option value="Accessories">Accessories</option>
             </select>
           </div>
@@ -162,9 +168,15 @@ toast.error(error.message)
             />
           </div>
         </div>
-        <button type="submit" className="px-8 py-2.5 bg-orange-600 text-white font-medium rounded">
-          ADD
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`px-8 py-2.5 text-white font-medium rounded transition ${isSubmitting ? "bg-orange-400 cursor-not-allowed" : "bg-orange-600"
+            }`}
+        >
+          {isSubmitting ? "Adding..." : "ADD"}
         </button>
+
       </form>
       {/* <Footer /> */}
     </div>

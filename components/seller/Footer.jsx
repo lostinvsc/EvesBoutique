@@ -4,23 +4,41 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <div className="flex md:flex-row flex-col-reverse items-center justify-between text-left w-full px-10">
-      <div className="flex items-center gap-4">
-        <Image className="hidden md:block" src={assets.logo} alt="logo" />
-        <div className="hidden md:block h-7 w-px bg-gray-500/60"></div>
-        <p className="py-4 text-center text-xs md:text-sm text-gray-500">
-          Copyright 2025 © greatstack.dev All Right Reserved.
+    <div className="flex flex-col md:flex-row items-center justify-between w-full px-4 md:px-10 py-6 gap-4 md:gap-0 bg-white text-gray-500 text-sm">
+      
+      {/* Left Section */}
+      <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left">
+        <Image className="w-24 md:w-auto" src={assets.logo} alt="logo" />
+        <div className="hidden md:block h-6 w-px bg-gray-400" />
+        <p className="text-xs md:text-sm">
+          © 2025 Eve'sBoutique. All Rights Reserved.
         </p>
       </div>
-      <div className="flex items-center gap-3">
-        <a href="#">
-          <Image src={assets.facebook_icon} alt="facebook_icon" />
+
+      {/* Right Section */}
+      <div className="flex gap-4">
+        <a
+          href="https://www.facebook.com/Evesweetly"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src={assets.facebook_icon}
+            alt="Facebook"
+            className="w-5 h-5 hover:opacity-75 transition-opacity duration-300"
+          />
         </a>
-        <a href="#">
-          <Image src={assets.twitter_icon} alt="twitter_icon" />
-        </a>
-        <a href="#">
-          <Image src={assets.instagram_icon} alt="instagram_icon" />
+
+        <a
+          href="https://www.instagram.com/eve_boutique"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src={assets.instagram_icon}
+            alt="Instagram"
+            className="w-5 h-5 hover:opacity-75 transition-opacity duration-300"
+          />
         </a>
       </div>
     </div>
