@@ -18,6 +18,20 @@ const Product = () => {
 
     const [mainImage, setMainImage] = useState(null);
     const [productData, setProductData] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [showSelectModal, setShowSelectModal] = useState(false);
+
+    const handleAddToCartClick = () => {
+        if (!selectedSize || !selectedColor) {
+            setShowSelectModal(true); // show modal to pick options
+        } else {
+            addToCart(productData._id, selectedSize, selectedColor);
+            setSelectedSize(null)
+            setSelectedSize(null)
+        }
+    };
+
 
     const fetchProductData = async () => {
         const product = products.find(product => product._id === id);
@@ -67,20 +81,6 @@ const Product = () => {
                     <h1 className="text-3xl font-medium text-gray-800/90 mb-4">
                         {productData.name}
                     </h1>
-                    {/* <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-0.5">
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image className="h-4 w-4" src={assets.star_icon} alt="star_icon" />
-                            <Image
-                                className="h-4 w-4"
-                                src={assets.star_dull_icon}
-                                alt="star_dull_icon"
-                            />
-                        </div>
-                        <p>(4.5)</p>
-                    </div> */}
                     <p className="text-gray-600 mt-3">
                         {productData.description}
                     </p>
@@ -91,45 +91,64 @@ const Product = () => {
                         </span>
                     </p>
                     <hr className="bg-gray-600 my-6" />
-                    <div className="overflow-x-auto">
+
+                    <div className="overflow-x-auto mt-4">
                         <table className="table-auto border-collapse w-full max-w-72">
                             <tbody>
-                                {/* <tr>
-                                    <td className="text-gray-600 font-medium">Brand</td>
-                                    <td className="text-gray-800/50 ">Generic</td>
-                                </tr> */}
-                                {/* <tr>
-                                    <td className="text-gray-600 font-medium">Color</td>
-                                    <td className="text-gray-800/50 ">Multi</td>
-                                </tr> */}
                                 <tr>
-                                    <td className="text-gray-600 font-medium">Category</td>
-                                    <td className="text-gray-800/50">
-                                        {productData.category}
+                                    <td className="text-gray-600 font-medium">Category:</td>
+                                    <td className="text-gray-800/50"> {productData.category}</td>
+                                </tr>
+                                <tr>
+                                    <td className="text-gray-600 font-medium">Colors:</td>
+                                    <td className="text-gray-800/50 flex gap-2">
+                                        {productData.colors && productData.colors.length > 0
+                                            ? productData.colors.map((color, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    title={color}
+                                                    className="w-6 h-6 rounded-full border border-gray-300"
+                                                    style={{ backgroundColor: color }}
+                                                ></span>
+                                            ))
+                                            : "N/A"}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="text-gray-600 font-medium">Sizes:</td>
+                                    <td className="text-gray-800/50 flex gap-2">
+                                        {productData.sizes && productData.sizes.length > 0
+                                            ? productData.sizes.map((size, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="px-2 py-1 border border-gray-400 rounded text-sm"
+                                                >
+                                                    {size}
+                                                </span>
+                                            ))
+                                            : "N/A"}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
+
                     <div className="flex items-center mt-10 gap-4">
-                        <button onClick={() => addToCart(productData._id)} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
+                        <button onClick={handleAddToCartClick} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
                             Add to Cart
                         </button>
-                        <button onClick={() => { addToCart(productData._id); router.push('/cart') }} className="w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition">
-                            Buy now
-                        </button>
+
                     </div>
                 </div>
             </div>
+
+
             <div className="flex flex-col items-center">
-
-
                 <div className="flex flex-col items-center mb-4 mt-16">
                     <p className="text-3xl font-medium">Featured <span className="font-medium text-orange-600">Products</span></p>
                     <div className="w-28 h-0.5 bg-orange-600 mt-2"></div>
                 </div>
-
 
                 <div className="relative w-full max-[400px]:w-screen my-8">
                     <div className="flex flex-wrap justify-around gap-y-6 relative z-10">
@@ -146,13 +165,72 @@ const Product = () => {
                     </div>
                 </div>
 
-
-
                 <Link href="/all-products" className="px-8 py-2 mb-16 border rounded text-gray-500/70 hover:bg-slate-50/90 transition">
                     See more
                 </Link>
             </div>
         </div>
+
+        {showSelectModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
+                    <h2 className="text-xl font-semibold mb-4">Select Size & Color</h2>
+
+                    <div>
+                        <p className="font-medium">Sizes:</p>
+                        <div className="flex gap-3 mt-2 flex-wrap">
+                            {productData.sizes.map((size) => (
+                                <button
+                                    key={size}
+                                    onClick={() => setSelectedSize(size)}
+                                    className={`px-3 py-1 border rounded ${selectedSize === size ? "bg-blue-500 text-white" : ""
+                                        }`}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-4">
+                        <p className="font-medium">Colors:</p>
+                        <div className="flex gap-3 mt-2 flex-wrap">
+                            {productData.colors.map((color) => (
+                                <button
+                                    key={color}
+                                    onClick={() => setSelectedColor(color)}
+                                    className={`w-8 h-8 rounded-full border ${selectedColor === color ? "ring-2 ring-blue-600" : ""
+                                        }`}
+                                    style={{ backgroundColor: color }}
+                                    aria-label={color}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-6 flex justify-end gap-4">
+                        <button
+                            onClick={() => setShowSelectModal(false)}
+                            className="px-4 py-2 border rounded"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            disabled={!selectedSize || !selectedColor}
+                            onClick={() => {
+                                handleAddToCartClick();
+                                setShowSelectModal(false);
+                            }}
+                            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+
         <Footer />
     </>
     ) : <Loading />

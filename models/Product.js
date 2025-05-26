@@ -9,8 +9,8 @@ const productSchema = new mongoose.Schema({
   image: { type: Array, required: true },
   category: { type: String, required: true },
   popular: { type: Boolean, default: false },
-  sizes: { type: [String], default: [] },
-  colors: { type: [String], default: [] },
+  sizes: { type: Array,required: true,default:[] },
+  colors: { type: Array,required: true,default:[] },
   date: {
     type: Date,
     default: Date.now,

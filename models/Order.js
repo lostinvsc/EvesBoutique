@@ -4,11 +4,15 @@ const orderSchema=new mongoose.Schema({
     userId:{type:String,required:true,ref:'user'},
     items:[{
         product:{type:String, required:true, ref:'product'},
-        quantity:{type:Number,required:true}
+        quantity:{type:Number,required:true},
+        color:{type:String},
+        size:{type:String}
     }],
     amount:{type:Number, required:true},
     address:{type:String, ref:'address',required:true},
     status:{type:String, required:true, default:"Order Placed"},
+    shipped:{type:Boolean,default:false},
+    delivered:{type:Boolean,default:false},
     date:{type:Number, required:true}
 })
 

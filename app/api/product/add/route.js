@@ -26,8 +26,13 @@ try {
     const price=formData.get('price')
     const offerPrice=formData.get('offerPrice')
     const popular=formData.get('popular')
-    const colors=formData.getAll('colors')
-    const sizes=formData.getAll('sizes')
+
+const colorsRaw = formData.getAll('colors');
+const sizesRaw = formData.getAll('sizes');
+
+const colors = colorsRaw.length > 0 ? JSON.parse(colorsRaw[0]) : [];
+const sizes = sizesRaw.length > 0 ? JSON.parse(sizesRaw[0]) : [];
+
      
     const files=formData.getAll('images')
 
@@ -75,6 +80,7 @@ return NextResponse.json({success:false,message:"No files uploaded"})
         date:Date.now()
 
     })
+
 
     return NextResponse.json({success:true,message:"Upload Successfull",newProduct})
 
