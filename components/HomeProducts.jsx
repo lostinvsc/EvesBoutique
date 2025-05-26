@@ -14,16 +14,18 @@ const HomeProducts = () => {
       {/* Container with central vertical line for <400px */}
       <div className="relative w-full max-[400px]:w-screen">
         <div className="flex flex-wrap justify-around gap-y-6 relative z-10">
-          {products.map((product, index) => (
-            <div
-              key={index}
-              className={`w-[200px] 
-                          max-[400px]:w-1/2 
-                          max-[300px]:w-full`}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
+          {products
+            .filter(product => product.popular) 
+            .map((product, index) => (
+              <div
+                key={index}
+                className={`w-[200px] 
+                  max-[400px]:w-1/2 
+                  max-[300px]:w-full`}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
         </div>
       </div>
 

@@ -55,6 +55,7 @@ const AddProduct = () => {
         setDescription('')
         setPrice('')
         setOfferPrice('')
+        popular(false)
       } else {
         toast.error(data.message)
       }
