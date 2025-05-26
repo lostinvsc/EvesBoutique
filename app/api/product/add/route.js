@@ -25,8 +25,12 @@ try {
     const category=formData.get('category')
     const price=formData.get('price')
     const offerPrice=formData.get('offerPrice')
-
+    const popular=formData.get('popular')
+     
     const files=formData.getAll('images')
+
+    
+
 
     if(!files || !files.length){
 return NextResponse.json({success:false,message:"No files uploaded"})
@@ -65,6 +69,7 @@ return NextResponse.json({success:false,message:"No files uploaded"})
         price:Number(price),
         offerPrice:Number(offerPrice),
         image,
+        popular,
         date:Date.now()
 
     })

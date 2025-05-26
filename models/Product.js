@@ -8,7 +8,11 @@ const productSchema=new mongoose.Schema({
     offerPrice:{type:Number,required:true},
     image:{type:Array,required:true},
     category:{type:String,required:true},
-    date:{type:Number,required:true}
+    popular:{type:Boolean},
+     date: {
+    type: Date,
+    default: Date.now,
+  }
 
 })
 

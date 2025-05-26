@@ -16,6 +16,8 @@ const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [popular, setPopular] = useState(false);
+
 
 
   const handleSubmit = async (e) => {
@@ -31,6 +33,8 @@ const AddProduct = () => {
     formData.append('category', category)
     formData.append('price', price)
     formData.append('offerPrice', offerPrice)
+    formData.append('popular', popular); 
+
 
     for (let i = 0; i < files.length; i++) {
 
@@ -137,6 +141,8 @@ const AddProduct = () => {
               <option value="Bags">Bags</option>
               <option value="Merchandise">Merchandise</option>
               <option value="Accessories">Accessories</option>
+              <option value="Jewelleries">Jewelleries</option>
+              <option value="Cosmetics">Cosmetics</option>
             </select>
           </div>
           <div className="flex flex-col gap-1 w-32">
@@ -167,6 +173,23 @@ const AddProduct = () => {
               required
             />
           </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-base font-medium" htmlFor="popular">
+              Popular Product
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                id="popular"
+                type="checkbox"
+                checked={popular}
+                onChange={(e) => setPopular(e.target.checked)}
+                className="w-5 h-5"
+              />
+              <span>{popular ? "Yes" : "No"}</span>
+            </div>
+          </div>
+
         </div>
         <button
           type="submit"
