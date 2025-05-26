@@ -26,10 +26,10 @@ try {
     const price=formData.get('price')
     const offerPrice=formData.get('offerPrice')
     const popular=formData.get('popular')
+    const colors=formData.getAll('colors')
+    const sizes=formData.getAll('sizes')
      
     const files=formData.getAll('images')
-
-    
 
 
     if(!files || !files.length){
@@ -70,6 +70,8 @@ return NextResponse.json({success:false,message:"No files uploaded"})
         offerPrice:Number(offerPrice),
         image,
         popular,
+        sizes,
+        colors,
         date:Date.now()
 
     })

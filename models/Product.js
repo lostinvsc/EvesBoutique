@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
 
-const productSchema=new mongoose.Schema({
-    userId:{type:String,required:true,ref:"user"},
-    name:{type:String,required:true},
-    description:{type:String,required:true},
-    price:{type:Number,required:true},
-    offerPrice:{type:Number,required:true},
-    image:{type:Array,required:true},
-    category:{type:String,required:true},
-    popular:{type:Boolean,default:false},
-     date: {
+const productSchema = new mongoose.Schema({
+  userId: { type: String, required: true, ref: "user" },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  offerPrice: { type: Number, required: true },
+  image: { type: Array, required: true },
+  category: { type: String, required: true },
+  popular: { type: Boolean, default: false },
+  sizes: { type: [String], default: [] },
+  colors: { type: [String], default: [] },
+  date: {
     type: Date,
     default: Date.now,
   }

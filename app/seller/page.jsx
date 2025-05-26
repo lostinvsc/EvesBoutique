@@ -18,6 +18,15 @@ const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [popular, setPopular] = useState(false);
 
+  const [sizes, setSizes] = useState([]);
+  const [newSize, setNewSize] = useState('');
+
+  const [colors, setColors] = useState([]);
+  const [newColor, setNewColor] = useState('');
+
+
+
+
 
 
   const handleSubmit = async (e) => {
@@ -33,7 +42,10 @@ const AddProduct = () => {
     formData.append('category', category)
     formData.append('price', price)
     formData.append('offerPrice', offerPrice)
-    formData.append('popular', popular); 
+    formData.append('popular', popular);
+    formData.append('sizes', JSON.stringify(sizes));
+    formData.append('colors', JSON.stringify(colors));
+
 
 
     for (let i = 0; i < files.length; i++) {
@@ -55,7 +67,9 @@ const AddProduct = () => {
         setDescription('')
         setPrice('')
         setOfferPrice('')
-        popular(false)
+        setPopular(false)
+        setSizes([])
+        setColors([])
       } else {
         toast.error(data.message)
       }
@@ -174,6 +188,113 @@ const AddProduct = () => {
               required
             />
           </div>
+
+          {/* Sizes */}
+          <div className="flex flex-col gap-2">
+            <label className="text-base font-medium">Sizes</label>
+            <div className="flex gap-2 flex-wrap items-center">
+              <input
+                type="text"
+                placeholder="e.g., XS"
+                className="border px-3 py-1 rounded"
+                value={newSize}
+                onChange={(e) => setNewSize(e.target.value)}
+              />
+              <select
+                className="border px-3 py-1 rounded"
+                onChange={(e) => setNewSize(e.target.value)}
+                defaultValue=""
+              >
+                <option value="" disabled>Select size</option>
+                {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="bg-orange-600 text-white px-3 py-1 rounded"
+                onClick={() => {
+                  const size = newSize.toUpperCase();
+                  if (size && !sizes.includes(size)) {
+                    setSizes([...sizes, size]);
+                    setNewSize('');
+                  }
+                }}
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {sizes.map((size) => (
+                <span
+                  key={size}
+                  className="bg-gray-200 text-sm px-2 py-1 rounded cursor-pointer"
+                  onClick={() => setSizes(sizes.filter((s) => s !== size))}
+                  title="Click to remove"
+                >
+                  {size}
+                </span>
+              ))}
+            </div>
+          </div>
+
+
+          {/* Colors */}
+          <div className="flex flex-col gap-2">
+            <label className="text-base font-medium">Colors</label>
+            <div className="flex gap-2 flex-wrap items-center">
+              <input
+                type="text"
+                placeholder="e.g., red"
+                className="border px-3 py-1 rounded"
+                value={newColor}
+                onChange={(e) => setNewColor(e.target.value)}
+              />
+
+              {/* Color Picker */}
+              <input
+                type="color"
+                className="w-10 h-10 p-0 border rounded"
+                onChange={(e) => setNewColor(e.target.value)}
+                title="Pick a color"
+              />
+
+              <button
+                type="button"
+                className="bg-orange-600 text-white px-3 py-1 rounded"
+                onClick={() => {
+                  const color = newColor.toLowerCase();
+                  if (color && !colors.includes(color)) {
+                    setColors([...colors, color]);
+                    setNewColor('');
+                  }
+                }}
+              >
+                Add
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {colors.map((color) => (
+                <span
+                  key={color}
+                  className="flex items-center gap-1 bg-gray-200 text-sm px-2 py-1 rounded cursor-pointer"
+                  onClick={() => setColors(colors.filter((c) => c !== color))}
+                  title="Click to remove"
+                >
+                  <span
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: color }}
+                  />
+                  {color}
+                </span>
+              ))}
+            </div>
+          </div>
+
+
 
           <div className="flex flex-col gap-1">
             <label className="text-base font-medium" htmlFor="popular">
