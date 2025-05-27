@@ -14,6 +14,15 @@ const OrderSummary = () => {
 
   const [userAddresses, setUserAddresses] = useState([]);
 
+
+
+  const sendorder = async () => {
+
+  }
+
+
+
+
   const fetchUserAddresses = async () => {
     try {
       const token = await getToken();
@@ -50,7 +59,7 @@ const OrderSummary = () => {
         return toast.error("Cart is empty")
       }
 
-      
+
 
       setIsPlacingOrder(true);
 
@@ -65,9 +74,14 @@ const OrderSummary = () => {
       )
 
       if (data.success) {
+
         toast.success(data.message)
+
         setCartItems({})
+        // sendorder()
         router.push('/order-placed')
+
+
       } else {
         toast.error(data.message)
       }
@@ -146,7 +160,12 @@ const OrderSummary = () => {
             <p className="text-gray-600">Shipping Fee</p>
             <p className="font-medium text-gray-800">Free</p>
           </div>
-       
+
+          <div className="flex justify-between">
+            <p className="text-gray-600">Payment Method</p>
+            <p className="font-medium text-gray-800">COD only</p>
+          </div>
+
           <div className="flex justify-between text-lg md:text-xl font-medium border-t pt-3">
             <p>Total</p>
             <p>{currency}{getCartAmount()}</p>

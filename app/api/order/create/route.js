@@ -4,9 +4,10 @@ import Product from "@/models/Product";
 import { inngest } from "@/config/inngest";
 import User from "@/models/User";
 import connectDB from "@/config/db";
-import authSeller from "@/lib/authSeller";
-import nodemailer from "nodemailer";
-
+// import authSeller from "@/lib/authSeller";
+// import nodemailer from "nodemailer";
+import { sendOrderMessage } from "./function";
+import axios from "axios";
 export async function POST(request) {
     try {
         await connectDB();
@@ -54,6 +55,45 @@ export async function POST(request) {
 
 
 
+        // const allusers = await User.find({});
+
+        // for (let i = 0; i < allusers.length; i++) {
+        //     const isSeller = await authSeller(allusers[i]._id);
+        //     if (isSeller) {
+        //         const to=allusers[i].email
+        //         const subject="New Order placed"
+        //         const text="You have received a new order"
+
+        //         const transporter = nodemailer.createTransport({
+        //             service: "gmail",
+        //             auth: {
+        //                 user: process.env.EMAIL_USERNAME,
+        //                 pass: process.env.EMAIL_PASSWORD,
+        //             },
+        //         });
+
+        //         await transporter.sendMail({
+        //             from: process.env.EMAIL_USERNAME,
+        //             to,
+        //             subject,
+        //             text,
+        //         });
+
+
+        //     }
+        // }
+
+
+        const orderss = {
+            address,
+            items: parsedItems,
+            amount: totalAmount,
+            date: Date.now(),
+        }
+
+
+        if (sendOrderMessage(orderss)) {
+
         await inngest.send({
             name: "order/created",
             data: {
@@ -72,35 +112,12 @@ export async function POST(request) {
             await user.save();
         }
 
-        const allusers = await User.find({});
-
-        for (let i = 0; i < allusers.length; i++) {
-            const isSeller = await authSeller(allusers[i]._id);
-            if (isSeller) {
-                const to=allusers[i].email
-                const subject="New Order placed"
-                const text="You have received a new order"
-
-                const transporter = nodemailer.createTransport({
-                    service: "gmail",
-                    auth: {
-                        user: process.env.EMAIL_USERNAME,
-                        pass: process.env.EMAIL_PASSWORD,
-                    },
-                });
-
-                await transporter.sendMail({
-                    from: process.env.EMAIL_USERNAME,
-                    to,
-                    subject,
-                    text,
-                });
-
-
-            }
-        }
 
         return NextResponse.json({ success: true, message: "Order Placed" });
+        }
+
+        return NextResponse.json({ success: false, message: "Error placing order" });
+
     } catch (error) {
         console.error("Order placement error:", error);
         return NextResponse.json({ success: false, message: error.message });
