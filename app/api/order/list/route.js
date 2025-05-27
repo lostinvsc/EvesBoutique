@@ -1,23 +1,37 @@
-import { getAuth } from "@clerk/nextjs/server"
+import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import connectDB from "@/config/db";
 import Order from "@/models/Order";
 import Address from "@/models/Address";
 import Product from "@/models/Product";
+
 export async function GET(request) {
     try {
-        const { userId } = getAuth(request)
-       await connectDB()
-Address.length
-Product.length
-       const  orders=await Order.find({userId}).populate('address items.product')
+        const { userId } = getAuth(request);
+        if (!userId) {
+            return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+        }
 
-        return NextResponse.json({ success: true, orders })
+        await connectDB();
+
+       
+        const orders = await Order.find({ userId }).populate('address items.product');
+
+      
+        const filteredOrders = orders.map(order => {
+            const filteredItems = order.items.filter(item => item.product !== null);
+            return {
+                ...order.toObject(),
+                items: filteredItems
+            };
+        });
+
+        return NextResponse.json({ success: true, orders: filteredOrders });
 
     } catch (error) {
-        console.log(error)
-        return NextResponse.json({ success: false, message: error.message })
+        console.error("Order Fetch Error:", error);
+        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     }
 }
 
-export {}; 
+export { };
