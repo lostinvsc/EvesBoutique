@@ -27,8 +27,6 @@ const AddProduct = () => {
 
 
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

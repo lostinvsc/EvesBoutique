@@ -33,28 +33,28 @@ const ProductList = () => {
     }
   };
 
-  const deleteProduct = async (productId) => {
-    try {
-      const isConfirmed=confirm("You wanna delete this item? ")
-      if(isConfirmed){
+  // const deleteProduct = async (productId) => {
+  //   try {
+  //     const isConfirmed = confirm("You wanna delete this item? ")
+  //     if (isConfirmed) {
 
-        const token = await getToken();
-        const { data } = await axios.delete(`/api/product/delete`, {
-          headers: { Authorization: `Bearer ${token}` },
-          data: { productId }, // sending body with DELETE
-        });
-        
-        if (data.success) {
-          toast.success("Product deleted successfully");
-          setProducts((prev) => prev.filter((p) => p._id !== productId));
-        } else {
-          toast.error(data.message);
-        }
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to delete product");
-    }
-  };
+  //       const token = await getToken();
+  //       const { data } = await axios.delete(`/api/product/delete`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //         data: { productId }, // sending body with DELETE
+  //       });
+
+  //       if (data.success) {
+  //         toast.success("Product deleted successfully");
+  //         setProducts((prev) => prev.filter((p) => p._id !== productId));
+  //       } else {
+  //         toast.error(data.message);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.message || "Failed to delete product");
+  //   }
+  // };
 
   useEffect(() => {
     if (user) {
@@ -69,65 +69,66 @@ const ProductList = () => {
       ) : (
         <div className="w-full md:p-10 p-4">
           <h2 className="pb-4 text-lg font-medium">All Product</h2>
-     <div className="flex flex-col items-center max-w-4xl w-full overflow-x-auto rounded-md bg-white border border-gray-500/20">
-  <div className="min-w-[600px] w-full">
-    <table className="table-fixed w-full">
+          <div className="flex flex-col items-center max-w-4xl w-full overflow-x-auto rounded-md bg-white border border-gray-500/20">
+            <div className="min-w-[600px] w-full">
+              <table className="table-fixed w-full">
 
-              <thead className="text-gray-900 text-sm text-left">
-                <tr>
-                  <th className="w-2/3 max-sm:w-2/5 md:w-2/5 px-4 py-3 font-medium truncate">Product</th>
-                <th className="px-4 py-3 font-medium truncate">Category</th>
+                <thead className="text-gray-900 text-sm text-left">
+                  <tr>
+                    <th className="w-2/3 max-sm:w-2/5 md:w-2/5 px-4 py-3 font-medium truncate">Product</th>
+                    <th className="px-4 py-3 font-medium truncate">Category</th>
 
-                  <th className="px-4 py-3 font-medium truncate">Price</th>
-                  <th className="px-4 py-3 font-medium truncate">Action</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm text-gray-500">
-                {products.map((product) => (
-                  <tr key={product._id} className="border-t border-gray-500/20">
-                    <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
-                      <div className="bg-gray-500/10 rounded p-2">
-                        <Image
-                          src={product.image[0]}
-                          alt="product"
-                          className="w-16"
-                          width={1280}
-                          height={720}
-                        />
-                      </div>
-                      <span className="truncate w-full">{product.name}</span>
-                    
-                    </td>
-                   <td className="px-4 py-3">{product.category}</td>
-
-                    <td className="px-4 py-3">₹{product.offerPrice}</td>
-
-                  <td className="px-4 py-3 flex gap-2">
-                      <button
-                        onClick={() => router.push(`/product/${product._id}`)}
-                        className="flex max-sm:pr-6 items-center gap-1 px-2 py-1.5 bg-orange-600 text-white rounded-md"
-                      >
-                        <span className="md:block">Visit</span>
-                        <Image
-                          className="h-3.5"
-                          src={assets.redirect_icon}
-                          alt="redirect"
-                        />
-                      </button>
-                      <button
-                        onClick={() => deleteProduct(product._id)}
-                        className="px-2 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    <th className="px-4 py-3 font-medium truncate">Price</th>
+                    <th className="px-4 py-3 font-medium truncate">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-sm text-gray-500">
+                  {products.map((product) => (
+                    <tr key={product._id} className="border-t border-gray-500/20">
+                      <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
+                        <div className="bg-gray-500/10 rounded p-2">
+                          <Image
+                            src={product.image[0]}
+                            alt="product"
+                            className="w-16"
+                            width={1280}
+                            height={720}
+                          />
+                        </div>
+                        <span className="truncate w-full">{product.name}</span>
+
+                      </td>
+                      <td className="px-4 py-3">{product.category}</td>
+
+                      <td className="px-4 py-3">₹{product.offerPrice}</td>
+
+                      <td className="px-4 py-3 flex gap-2">
+                        <button
+                          onClick={() => router.push(`/product/${product._id}`)}
+                          className="flex max-sm:pr-6 items-center gap-1 px-2 py-1.5 bg-orange-600 text-white rounded-md"
+                        >
+                          <span className="md:block">Visit</span>
+                          <Image
+                            className="h-3.5"
+                            src={assets.redirect_icon}
+                            alt="redirect"
+                          />
+                        </button>
+                        <button
+                          onClick={() => router.push(`/seller/edit/${product._id}`)}
+                          className="px-4 py-1.5 bg-orange-600 text-white rounded-md hover:bg-orange-400  transition"
+                        >
+                          Edit
+                        </button>
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
       )}
       <Footer />
     </div>
