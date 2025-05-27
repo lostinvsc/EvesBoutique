@@ -72,9 +72,14 @@ const MyOrders = () => {
                                                 {new Date(new Date(order.date).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}
                                             </p>
 
+                                            <p className=" text-base">
+                                                Mode: {order.paymentType}
+                                            </p>
+                                            
                                             <p className="font-semibold text-base">
                                                 Total: {currency}{order.amount}
                                             </p>
+                                            
                                         </div>
                                     </div>
 

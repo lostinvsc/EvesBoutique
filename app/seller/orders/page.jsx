@@ -9,100 +9,150 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const Orders = () => {
-
-    const { currency,getToken,user } = useAppContext();
-
+    const { currency, getToken, user } = useAppContext();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const fetchSellerOrders = async () => {
         try {
-        const token =await getToken()
-        const {data}=await axios.get('/api/order/seller-orders', {headers:{Authorization:`Bearer ${token}`}})
+            const token = await getToken();
+            const { data } = await axios.get("/api/order/seller-orders", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
 
-        if(data.success){
-            setOrders(data.orders.reverse())
-            setLoading(false)
-
-        }else{
-            toast.error(data.message)
+            if (data.success) {
+                setOrders(data.orders.reverse());
+                setLoading(false);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
         }
-       } catch (error) {
-           toast.error(error.message)
-       }
-    }
+    };
+
+    const updateOrderStatus = async (orderId, newStatus) => {
+        try {
+            const token = await getToken();
+            const { data } = await axios.post("/api/order/update", {
+                orderId,
+                status: newStatus,
+            }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (data.success) {
+                toast.success("Status updated");
+                
+                setOrders((prevOrders) =>
+                    prevOrders.map((order) =>
+                        order._id === orderId ? { ...order, status: newStatus } : order
+                    )
+                );
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Failed to update status");
+        }
+    };
 
     useEffect(() => {
-        if(user){
+        if (user) {
             fetchSellerOrders();
         }
     }, [user]);
 
     return (
-        <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm">
-        
-                    <h2 className="text-lg font-medium mt-6">Orders</h2>
-                    {loading ? (
-                        <Loading />
-                    ) : (
-                        <div className="max-w-5xl border-t border-gray-300 text-sm">
-                            {orders.map((order, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-col gap-6 p-5 border-b border-gray-300"
-                                >
-                                    <div className="flex flex-col md:flex-row justify-between">
-                                        <div className="space-y-2">
-                                            <p className="text-base font-semibold">
-                                                Order ID: {order._id}
-                                            </p>
-                                            <p>
-                                                <span className="font-medium">{order.address.fullName}</span><br />
-                                                {order.address.area}, {order.address.city},<br />
-                                                {order.address.state} - {order.address.pincode}<br />
-                                                Phone: {order.address.phoneNumber}
-                                            </p>
-                                        </div>
-                                        <div className="text-sm text-right">
-                                            <p className="font-medium">Status: {order.status}</p>
-                                            <p>Order Date: {new Date(order.date).toLocaleDateString()}</p>
-                                            <p>
-                                                Deliver Before:{" "}
-                                                {new Date(new Date(order.date).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-                                            </p>
-
-                                            <p className="font-semibold text-base">
-                                                Total: {currency}{order.amount}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                                        {order.items.map((item, idx) => (
-                                            <div key={idx} className="flex gap-4 items-center border p-3 rounded">
-                                                <Image
-                                                    src={item.product.image[0] || assets.box_icon}
-                                                    alt={item.product.name}
-                                                    width={64}
-                                                    height={64}
-                                                    className="rounded object-cover"
-                                                />
-                                                <div className="flex-1">
-                                                    <p className="font-medium">{item.product.name}</p>
-                                                    <p>Qty: {item.quantity}</p>
-                                                    <p>Size: {item.size}</p>
-                                                    <p className="flex items-center gap-1">
-                                                        Color: <span style={{ backgroundColor: item.color }} className="w-4 h-4 inline-block rounded border" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+        <div className="flex-1 h-screen overflow-scroll flex flex-col justify-top text-sm">
+            <h2 className="text-lg font-medium mt-6">Orders</h2>
+            {loading ? (
+                <Loading />
+            ) : (
+                <div className="max-w-5xl border-t border-gray-300 text-sm">
+                    {orders.map((order, index) => (
+                        <div
+                            key={index}
+                            className="flex flex-col gap-6 p-5 border-b border-gray-300"
+                        >
+                            <div className="flex flex-col md:flex-row justify-between">
+                                <div className="space-y-2">
+                                    <p className="text-base font-semibold">
+                                        Order ID: {order._id}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium">{order.address.fullName}</span>
+                                        <br />
+                                        {order.address.area}, {order.address.city},
+                                        <br />
+                                        {order.address.state} - {order.address.pincode}
+                                        <br />
+                                        Phone: {order.address.phoneNumber}
+                                    </p>
                                 </div>
-                            ))}
+                                <div className="text-sm text-right space-y-1">
+                                    <p className="font-medium">
+                                        Status:
+                                        <select
+                                            value={order.status || "Not Shipped"}
+                                            onChange={(e) =>
+                                                updateOrderStatus(order._id, e.target.value)
+                                            }
+                                            className="ml-2 p-1 rounded border"
+                                        >
+                                            <option value="Not Shipped">Not Shipped</option>
+                                            <option value="Shipped">Shipped</option>
+                                            <option value="Delivered">Delivered</option>
+                                        </select>
+                                    </p>
+                                    <p>Order Date: {new Date(order.date).toLocaleDateString()}</p>
+                                    <p>
+                                        Deliver Before:{" "}
+                                        {new Date(
+                                            new Date(order.date).getTime() +
+                                                7 * 24 * 60 * 60 * 1000
+                                        ).toLocaleDateString()}
+                                    </p>
+                                    <p className="text-base">Mode: {order.paymentType}</p>
+                                    <p className="font-semibold text-base">
+                                        Total: {currency}
+                                        {order.amount}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                {order.items.map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="flex gap-4 items-center border p-3 rounded"
+                                    >
+                                        <Image
+                                            src={item.product.image[0] || assets.box_icon}
+                                            alt={item.product.name}
+                                            width={64}
+                                            height={64}
+                                            className="rounded object-cover"
+                                        />
+                                        <div className="flex-1">
+                                            <p className="font-medium">{item.product.name}</p>
+                                            <p>Qty: {item.quantity}</p>
+                                            <p>Size: {item.size}</p>
+                                            <p className="flex items-center gap-1">
+                                                Color:{" "}
+                                                <span
+                                                    style={{ backgroundColor: item.color }}
+                                                    className="w-4 h-4 inline-block rounded border"
+                                                />
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    )}
-               
+                    ))}
+                </div>
+            )}
             <Footer />
         </div>
     );
