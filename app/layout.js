@@ -15,6 +15,7 @@ import {
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
+
 export const metadata = {
   title: "Eve's Boutique",
   description: "Discover Eve's Boutique — your ultimate destination for trendy fashion, curated collections, and seamless shopping.",
@@ -24,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      
+
         <head>
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
