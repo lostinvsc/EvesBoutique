@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-
 export const AppContext = createContext();
 
 export const useAppContext = () => {

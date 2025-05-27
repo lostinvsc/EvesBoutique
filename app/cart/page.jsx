@@ -49,27 +49,27 @@ const Cart = () => {
                   return (
                     <tr key={key}>
                       <td className="flex items-center gap-4 py-4 md:px-4 px-1">
-                        <div className="text-sm">
-                          <p className="text-gray-800">{product.name}</p>
-                          <p className="text-gray-500 text-xs">
-                            Size: {size} |
-                            <span
-                              className="inline-block w-3 h-3 rounded-full border translate-y-[2px] border-gray-300"
-                              style={{ backgroundColor: color }}
-                            ></span>
-                          </p>
+                        <div>
+                          <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
+                            <Image
+                              src={product.image[0]}
+                              alt={product.name}
+                              className="w-16 h-auto object-cover mix-blend-multiply"
+                              width={1280}
+                              height={720}
+                            />
+                          </div>
                           <button
-                            className="text-xs text-orange-600 mt-1"
+                            className="md:hidden text-xs text-orange-600 mt-1"
                             onClick={() => updateCartQuantity(key, 0)}
                           >
                             Remove
                           </button>
                         </div>
-
                         <div className="text-sm hidden md:block">
                           <p className="text-gray-800">{product.name}</p>
                           <p className="text-gray-500 text-xs">
-                            Size: {size} |
+                            Size: {size} | 
                             <span
                               className="inline-block w-3 h-3 rounded-full border translate-y-[2px] border-gray-300"
                               style={{ backgroundColor: color }}

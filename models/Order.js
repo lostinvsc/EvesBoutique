@@ -10,9 +10,8 @@ const orderSchema=new mongoose.Schema({
     }],
     amount:{type:Number, required:true},
     address:{type:String, ref:'address',required:true},
-    status:{type:String, required:true, default:"Order Placed"},
-    shipped:{type:Boolean,default:false},
-    delivered:{type:Boolean,default:false},
+    status:{type:String, required:true, default:"Not shipped"},
+    paymentType:{type:String,default:"COD"},
     date:{type:Number, required:true}
 })
 

@@ -66,6 +66,25 @@ export const syncUserDeletion = inngest.createFunction(
     }
 )
 
+//inngest function to send notification to all sellers
+
+// export const notifySeller = inngest.createFunction(
+//   { id: "notify-seller" },
+//   { event: "notification/new-order" },
+//   async ({ event }) => {
+//     const { sellerId, message } = event.data;
+
+//     // Fetch seller email or push token from DB if needed
+//     const seller = await User.findById(sellerId);
+
+//     // Send actual notification (email, push, etc.)
+//     await sendPushNotification(seller, message);
+
+//     return { success: true };
+//   }
+// );
+
+
 
 // inngest function to create user's order in database
 
@@ -85,12 +104,12 @@ export const createUserOrder = inngest.createFunction(
                 items: event.data.items,
                 amount: event.data.amount,
                 address: event.data.address,
-                date:event.data.date
+                date: event.data.date
             };
         });
 
-await connectDB()
-await Order.insertMany(orders)
+        await connectDB()
+        await Order.insertMany(orders)
 
         return { success: true, processed: orders.length };
     }

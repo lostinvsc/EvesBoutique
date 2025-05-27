@@ -40,47 +40,69 @@ const Orders = () => {
 
     return (
         <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm">
-            {loading ? <Loading /> : <div className="md:p-10 p-4 space-y-5">
-                <h2 className="text-lg font-medium">Orders</h2>
-                <div className="max-w-4xl rounded-md">
-                    {orders.map((order, index) => (
-                        <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-t border-gray-300">
-                            <div className="flex-1 flex gap-5 max-w-80">
-                                <Image
-                                    className="max-w-16 max-h-16 object-cover"
-                                    src={assets.box_icon}
-                                    alt="box_icon"
-                                />
-                                <p className="flex flex-col gap-3">
-                                    <span className="font-medium">
-                                        {order.items.map((item) => item.product.name + ` x ${item.quantity}`).join(", ")}
-                                    </span>
-                                    <span>Items : {order.items.length}</span>
-                                </p>
-                            </div>
-                            <div>
-                                <p>
-                                    <span className="font-medium">{order.address.fullName}</span>
-                                    <br />
-                                    <span >{order.address.area}</span>
-                                    <br />
-                                    <span>{`${order.address.city}, ${order.address.state}`}</span>
-                                    <br />
-                                    <span>{order.address.phoneNumber}</span>
-                                </p>
-                            </div>
-                            <p className="font-medium my-auto">{currency}{order.amount}</p>
-                            <div>
-                                <p className="flex flex-col">
-                                    <span>Method : COD</span>
-                                    <span>Date : {new Date(order.date).toLocaleDateString()}</span>
-                                    <span>Payment : Pending</span>
-                                </p>
-                            </div>
+        
+                    <h2 className="text-lg font-medium mt-6">Orders</h2>
+                    {loading ? (
+                        <Loading />
+                    ) : (
+                        <div className="max-w-5xl border-t border-gray-300 text-sm">
+                            {orders.map((order, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-col gap-6 p-5 border-b border-gray-300"
+                                >
+                                    <div className="flex flex-col md:flex-row justify-between">
+                                        <div className="space-y-2">
+                                            <p className="text-base font-semibold">
+                                                Order ID: {order._id}
+                                            </p>
+                                            <p>
+                                                <span className="font-medium">{order.address.fullName}</span><br />
+                                                {order.address.area}, {order.address.city},<br />
+                                                {order.address.state} - {order.address.pincode}<br />
+                                                Phone: {order.address.phoneNumber}
+                                            </p>
+                                        </div>
+                                        <div className="text-sm text-right">
+                                            <p className="font-medium">Status: {order.status}</p>
+                                            <p>Order Date: {new Date(order.date).toLocaleDateString()}</p>
+                                            <p>
+                                                Deliver Before:{" "}
+                                                {new Date(new Date(order.date).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                                            </p>
+
+                                            <p className="font-semibold text-base">
+                                                Total: {currency}{order.amount}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                        {order.items.map((item, idx) => (
+                                            <div key={idx} className="flex gap-4 items-center border p-3 rounded">
+                                                <Image
+                                                    src={item.product.image[0] || assets.box_icon}
+                                                    alt={item.product.name}
+                                                    width={64}
+                                                    height={64}
+                                                    className="rounded object-cover"
+                                                />
+                                                <div className="flex-1">
+                                                    <p className="font-medium">{item.product.name}</p>
+                                                    <p>Qty: {item.quantity}</p>
+                                                    <p>Size: {item.size}</p>
+                                                    <p className="flex items-center gap-1">
+                                                        Color: <span style={{ backgroundColor: item.color }} className="w-4 h-4 inline-block rounded border" />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            </div>}
+                    )}
+               
             <Footer />
         </div>
     );
