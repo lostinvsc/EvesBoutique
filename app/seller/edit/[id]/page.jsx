@@ -14,7 +14,7 @@ export default function EditProduct() {
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
 
-    const categories = ['Garments', 'Bags', 'Footwear', 'Accessories','Merchandise','Jewelleries','Cosmetics'];
+    const categories = ['Garments', 'Bags', 'Footwear', 'Accessories', 'Merchandise', 'Jewelleries', 'Cosmetics'];
 
 
     useEffect(() => {
@@ -165,7 +165,7 @@ export default function EditProduct() {
                                 sizes: [...(prev.sizes || []), '']
                             }))
                         }
-                        className="text-blue-600 hover:underline mt-1"
+                        className="text-orange-600 hover:underline mt-1"
                     >
                         + Add Size
                     </button>
@@ -177,13 +177,18 @@ export default function EditProduct() {
                     {(formData.colors || []).map((color, index) => (
                         <div key={index} className="flex items-center mb-2 space-x-2">
                             <input
-                                type="color"
+                                type="text"
                                 value={color}
                                 onChange={(e) => handleArrayChange('colors', index, e.target.value)}
-                                className="w-12 h-10 border rounded"
+                                className="w-32 px-2 py-1 border rounded text-sm"
+                                placeholder="#ff0000 or red"
                                 title={`Color ${index + 1}`}
                             />
-                            <span className="text-sm text-gray-600">{color}</span>
+                            <div
+                                className="w-6 h-6 rounded border"
+                                style={{ backgroundColor: color }}
+                                title={color}
+                            />
                             <button
                                 type="button"
                                 onClick={() => {
@@ -203,14 +208,15 @@ export default function EditProduct() {
                         onClick={() =>
                             setFormData(prev => ({
                                 ...prev,
-                                colors: [...(prev.colors || []), '#000000']
+                                colors: [...(prev.colors || []), '']
                             }))
                         }
-                        className="text-blue-600 hover:underline mt-1"
+                        className="text-orange-600 hover:underline mt-1"
                     >
                         + Add Color
                     </button>
                 </div>
+
 
 
                 {/* Popular checkbox */}
