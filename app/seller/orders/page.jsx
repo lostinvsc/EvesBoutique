@@ -42,7 +42,7 @@ const Orders = () => {
             });
 
             if (data.success) {
-                toast.success("Status updated");
+                toast.success("Status updated")
                 
                 setOrders((prevOrders) =>
                     prevOrders.map((order) =>
