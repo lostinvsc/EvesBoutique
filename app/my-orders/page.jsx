@@ -75,7 +75,7 @@ const MyOrders = () => {
                                             <p className=" text-base">
                                                 Mode: {order.paymentType}
                                             </p>
-                                            
+
                                             <p className="font-semibold text-base">
                                                 Total: {currency}{order.amount}
                                             </p>
@@ -96,10 +96,17 @@ const MyOrders = () => {
                                                 <div className="flex-1">
                                                     <p className="font-medium">{item.product.name}</p>
                                                     <p>Qty: {item.quantity}</p>
-                                                    <p>Size: {item.size}</p>
-                                                    <p className="flex items-center gap-1">
+                                                    {
+                                                        item.size!="null" &&
+                                                        <p>Size: {item.size}</p>
+                                                    }
+                                                    {
+                                                        item.color!="null" &&
+
+                                                        <p className="flex items-center gap-1">
                                                         Color: <span style={{ backgroundColor: item.color }} className="w-4 h-4 inline-block rounded border" />
                                                     </p>
+                                                    }
                                                 </div>
                                             </div>
                                         ))}

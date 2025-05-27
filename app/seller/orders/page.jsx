@@ -43,7 +43,7 @@ const Orders = () => {
 
             if (data.success) {
                 toast.success("Status updated")
-                
+
                 setOrders((prevOrders) =>
                     prevOrders.map((order) =>
                         order._id === orderId ? { ...order, status: newStatus } : order
@@ -110,7 +110,7 @@ const Orders = () => {
                                         Deliver Before:{" "}
                                         {new Date(
                                             new Date(order.date).getTime() +
-                                                7 * 24 * 60 * 60 * 1000
+                                            7 * 24 * 60 * 60 * 1000
                                         ).toLocaleDateString()}
                                     </p>
                                     <p className="text-base">Mode: {order.paymentType}</p>
@@ -137,14 +137,22 @@ const Orders = () => {
                                         <div className="flex-1">
                                             <p className="font-medium">{item.product.name}</p>
                                             <p>Qty: {item.quantity}</p>
-                                            <p>Size: {item.size}</p>
-                                            <p className="flex items-center gap-1">
-                                                Color:{" "}
-                                                <span
-                                                    style={{ backgroundColor: item.color }}
-                                                    className="w-4 h-4 inline-block rounded border"
-                                                />
-                                            </p>
+                                            {
+                                                item.size != "null" &&
+
+                                                <p>Size: {item.size}</p>
+                                            }
+                                            {
+                                                item.color != "null" &&
+
+                                                <p className="flex items-center gap-1">
+                                                    Color:{" "}
+                                                    <span
+                                                        style={{ backgroundColor: item.color }}
+                                                        className="w-4 h-4 inline-block rounded border"
+                                                    />
+                                                </p>
+                                            }
                                         </div>
                                     </div>
                                 ))}

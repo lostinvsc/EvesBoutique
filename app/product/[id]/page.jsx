@@ -18,17 +18,23 @@ const Product = () => {
 
     const [mainImage, setMainImage] = useState(null);
     const [productData, setProductData] = useState(null);
-    const [selectedSize, setSelectedSize] = useState(null);
-    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState("");
+    const [selectedColor, setSelectedColor] = useState("");
     const [showSelectModal, setShowSelectModal] = useState(false);
 
     const handleAddToCartClick = () => {
-        if (!selectedSize || !selectedColor) {
-            setShowSelectModal(true); // show modal to pick options
+        const hasColors = productData.colors?.length > 0;
+        const hasSizes = productData.sizes?.length > 0;
+
+        const needColor = hasColors && !selectedColor;
+        const needSize = hasSizes && !selectedSize;
+
+        if (needColor || needSize) {
+            setShowSelectModal(true);
         } else {
-            addToCart(productData._id, selectedSize, selectedColor);
-            setSelectedSize(null)
-            setSelectedSize(null)
+            addToCart(productData._id, selectedSize || null, selectedColor || null);
+            setSelectedSize("");
+            setSelectedColor("");
         }
     };
 
@@ -135,7 +141,7 @@ const Product = () => {
 
 
                     <div className="flex items-center mt-10 gap-4">
-                        <button onClick={handleAddToCartClick} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
+                        <button onClick={handleAddToCartClick} className="w-full py-3.5 bg-orange-600 text-white font-bold hover:bg-orange-400 transition">
                             Add to Cart
                         </button>
 
@@ -152,16 +158,18 @@ const Product = () => {
 
                 <div className="relative w-full max-[400px]:w-screen my-8">
                     <div className="flex flex-wrap justify-around gap-y-6 relative z-10">
-                        {products.map((product, index) => (
-                            <div
-                                key={index}
-                                className={`w-[200px] 
+                        {products
+                            .filter((p) => p.category === productData.category)
+                            .map((product, index) => (
+                                <div
+                                    key={index}
+                                    className={`w-[200px] 
                           max-[400px]:w-1/2 
                           max-[300px]:w-full`}
-                            >
-                                <ProductCard product={product} />
-                            </div>
-                        ))}
+                                >
+                                    <ProductCard product={product} />
+                                </div>
+                            ))}
                     </div>
                 </div>
 
@@ -210,21 +218,28 @@ const Product = () => {
 
                     <div className="mt-6 flex justify-end gap-4">
                         <button
-                            onClick={() => setShowSelectModal(false)}
+                            onClick={() => { setShowSelectModal(false); setSelectedColor(""); setSelectedSize("") }}
                             className="px-4 py-2 border rounded"
                         >
                             Cancel
                         </button>
                         <button
-                            disabled={!selectedSize || !selectedColor}
+                            disabled={
+                                (productData.colors.length > 0 && !selectedColor) ||
+                                (productData.sizes.length > 0 && !selectedSize)
+                            }
                             onClick={() => {
-                                handleAddToCartClick();
+                                addToCart(productData._id, selectedSize || null, selectedColor || null);
+                                setSelectedSize("");
+                                setSelectedColor("");
                                 setShowSelectModal(false);
                             }}
-                            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+                            className="px-4 py-2 bg-orange-500 text-white rounded disabled:opacity-50"
                         >
                             Add to Cart
                         </button>
+
+
                     </div>
                 </div>
             </div>

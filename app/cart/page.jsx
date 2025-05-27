@@ -54,26 +54,32 @@ const Cart = () => {
                             <Image
                               src={product.image[0]}
                               alt={product.name}
-                              className="w-16 h-auto object-cover mix-blend-multiply"
+                              className="w-[70px] h-[60px]   object-cover mix-blend-multiply"
                               width={1280}
                               height={720}
                             />
                           </div>
-                          <button
-                            className="md:hidden text-xs text-orange-600 mt-1"
-                            onClick={() => updateCartQuantity(key, 0)}
-                          >
-                            Remove
-                          </button>
+
+              
+
                         </div>
-                        <div className="text-sm hidden md:block">
+                        <div className="text-sm  md:block">
                           <p className="text-gray-800">{product.name}</p>
                           <p className="text-gray-500 text-xs">
-                            Size: {size} | 
-                            <span
-                              className="inline-block w-3 h-3 rounded-full border translate-y-[2px] border-gray-300"
-                              style={{ backgroundColor: color }}
-                            ></span>
+                            {
+                              size != "null" &&
+                              <span>
+                                Size: {size} |
+                              </span>
+
+                            }
+                            {
+                              color != "null" &&
+                              <span
+                                className="inline-block w-3 h-3 rounded-full border translate-y-[2px] border-gray-300"
+                                style={{ backgroundColor: color }}
+                              ></span>
+                            }
                           </p>
                           <button
                             className="text-xs text-orange-600 mt-1"
