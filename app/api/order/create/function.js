@@ -39,6 +39,7 @@ ${enrichedItems.map((item, i) =>
         const token = process.env.TOKEN; // keep this secure
         const phoneNumberId = '677332382129481';
        const recipientPhone = '+916375921418';
+       
     //    const recipientPhone = '+917005969269';
 
         // Send message
